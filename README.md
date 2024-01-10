@@ -2,6 +2,7 @@
 
 ## Overview
 This package implements visual servoing (eye-in-hand) for Kinova Jaco2 7-dof robot arm.
+https://github.com/robot0826/visual_servoing/assets/139858045/5996ccbb-ea0f-4738-aafd-bd663d58e0bd
 
 ## Requirements
 - Kinova Jaco2 7-dof robot arm
