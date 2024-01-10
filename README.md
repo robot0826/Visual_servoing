@@ -17,26 +17,29 @@ https://github.com/robot0826/visual_servoing/assets/139858045/7ffd6c37-4c5d-4344
 - [kinova-ros](https://github.com/Kinovarobotics/kinova-ros.git) (modified, refer to the below)
 - [realsense-ros](https://github.com/IntelRealSense/realsense-ros.git)
 - [apriltag_ros](https://github.com/AprilRobotics/apriltag_ros.git) (modified, refer to the below)
+- tf2_ros
 - rviz (optional, for visualization)
 
 ## Installation and Execution
 Clone this repository in your ```/catkin_ws/src``` directory and use ```catkin build```.
 
-Enter the commands below in order.
+Enter the commands below in the order in terminals.
 1. ```roslaunch kinova_bringup kinova_robot.launch```
 2. ```roslaunch realsense2_camera rs_camera.launch```
 3. ```roslaunch apriltag_ros continuous_detection.launch```
 4. ```rosservice call /j2s7s300_driver/in/home_arm```
 5. ```rosrun visual_servoing main.py```
 
+## Comments
+- The eye-in-hand approach is the most challenging among visual servoing methods
+- The error arises because the camera and the manipulator move simultaneously to track the tag
+  - Hand tremors make vibrations to the desired end-effector frame as well as the camera frame
+  - Moving average filters or Kalman filters may help
+- High-level control using the ROS action server-client makes delays
+  - Low-level control in Kinova API may help
+- The frame rate of Intel RealSense D435i is limited to 30 Hz, leading to a significant bottleneck
+
 ## Modified Parts (for kinova-ros and apriltag_ros)
-- For apriltag_ros/apriltag_ros/launch/continuous_detection.launch
-  - ```<arg name="camera_name" default="/camera/color" />```
-  - ```<arg name="image_topic" default="image_raw" />```
-  - ```<remap from="image_rect" to="$(arg camera_name)/image_raw" />```
-  - ```<remap from="camera_info" to="$(arg camera_name)/camera_info" />```
-  - ```<node pkg="tf2_ros" type="static_transform_publisher" name="robot_camera_bridge" args="0 0.063 -0.105 -1.57079632679 -1.57079632679 0 j2s7s300_end_effector camera_link"/>```
-  - ```<node pkg="tf2_ros" type="static_transform_publisher" name="tag_desired_ee_bridge" args="0 0 0.6 0 3.14159265359 0 tag_0 desired_end_effector"/>```
 - For kinova-ros/kinova_bringup/launch/config/robot_parameters.yaml
   - ```jointSpeedLimitParameter1: 20``` (default = 10)
 - For kinova-ros/kinova_description/urdf/j2s7s300.xacro
@@ -47,3 +50,10 @@ Enter the commands below in order.
   - ```<xacro:property name="joint_5_velocity_limit" value="${96*J_PI/180}" />``` (default = 48*J_PI/180)
   - ```<xacro:property name="joint_6_velocity_limit" value="${96*J_PI/180}" />``` (default = 48*J_PI/180)
   - ```<xacro:property name="joint_7_velocity_limit" value="${96*J_PI/180}" />``` (default = 48*J_PI/180)
+- For apriltag_ros/apriltag_ros/launch/continuous_detection.launch
+  - ```<arg name="camera_name" default="/camera/color" />```
+  - ```<arg name="image_topic" default="image_raw" />```
+  - ```<remap from="image_rect" to="$(arg camera_name)/image_raw" />```
+  - ```<remap from="camera_info" to="$(arg camera_name)/camera_info" />```
+  - ```<node pkg="tf2_ros" type="static_transform_publisher" name="robot_camera_bridge" args="0 0.063 -0.105 -1.57079632679 -1.57079632679 0 j2s7s300_end_effector camera_link"/>```
+  - ```<node pkg="tf2_ros" type="static_transform_publisher" name="tag_desired_ee_bridge" args="0 0 0.6 0 3.14159265359 0 tag_0 desired_end_effector"/>```
