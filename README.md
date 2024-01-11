@@ -32,8 +32,9 @@ Enter the commands below in the order in terminals.
 
 ## Comments
 - The eye-in-hand approach is the most challenging among visual servoing methods
-- The error arises because the camera and the manipulator move simultaneously to track the tag
-  - Hand tremors make vibrations to the desired end-effector frame as well as the camera frame
+  - The error arises because the camera and the manipulator move simultaneously to track the tag
+  - The tag is easy to be out of the camera frame compared to other methods
+- Hand tremors make vibrations to the desired end-effector frame as well as the camera frame
   - Moving average filters or Kalman filters may help
 - High-level control using the ROS action server-client makes delays
   - Low-level control in Kinova API may help
