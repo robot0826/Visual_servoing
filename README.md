@@ -8,7 +8,7 @@ https://github.com/robot0826/visual_servoing/assets/139858045/7ffd6c37-4c5d-4344
 ## Requirements
 - Kinova Jaco2 7-dof robot arm
 - Intel RealSense D435i
-- april.tag.Tag36h11, id = 0 (size = 17.2 mm)
+- april.tag.Tag36h11, id = 0 (size = 172 mm)
 
 ## Dependencies
 - Ubuntu 20.04
